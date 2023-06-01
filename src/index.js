@@ -33,6 +33,8 @@ ws.on('close', function close() {
   console.log('connection has closed');
 });
 
+let connected = false;
+
 ws.on("message", function message(data) {
   const receivedMessage = JSON.parse(data);
 
@@ -42,8 +44,12 @@ ws.on("message", function message(data) {
       break;
     case "confirm_subscription":
       console.log("confirmed subscription");
-      Bot.handleMessage(ws, receivedMessage);
+      connected = true
       break;
+  }
+
+  if (connected) {
+    Bot.handleMessage(ws, receivedMessage);
   }
 });
 
